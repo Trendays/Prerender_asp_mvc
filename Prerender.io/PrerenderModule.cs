@@ -18,17 +18,54 @@ namespace Prerender.io
         private static readonly string PRERENDER_SECTION_KEY = "prerender";
         private static readonly string _Escaped_Fragment = "_escaped_fragment_";
 
-        public void Dispose()
-        {
+        private List<string> _crawlerUserAgents;
+        private List<string> _extensionsToIgnore;
 
+        private List<String> GetCrawlerUserAgents(PrerenderConfigSection config)
+        {
+            var crawlerUserAgents = new List<string>()
+                {
+                    "googlebot", "yahoo", "bingbot", "yandex", "baiduspider", "facebookexternalhit", "twitterbot", "rogerbot", "linkedinbot",
+                    "embedly", "quora link preview", "showyoubot", "outbrain", "pinterest/0.",
+                    "developers.google.com/+/web/snippet", "slackbot", "vkShare", "W3C_Validator",
+                    "redditbot", "Applebot", "WhatsApp", "flipboard", "tumblr", "bitlybot",
+                    "SkypeUriPreview", "nuzzel", "Discordbot", "Google Page Speed", "x-bufferbot"
+                };
+
+            if (config.CrawlerUserAgents.IsNotEmpty())
+            {
+                crawlerUserAgents.AddRange(config.CrawlerUserAgents);
+            }
+            return crawlerUserAgents;
+        }
+
+        private List<String> GetExtensionsToIgnore(PrerenderConfigSection config)
+        {
+            var extensionsToIgnore = new List<string>() {".js", ".css", ".less", ".png", ".jpg", ".jpeg",
+                ".gif", ".pdf", ".doc", ".txt", ".zip", ".mp3", ".rar", ".exe", ".wmv", ".doc", ".avi", ".ppt", ".mpg",
+                ".mpeg", ".tif", ".wav", ".mov", ".psd", ".ai", ".xls", ".mp4", ".m4a", ".swf", ".dat", ".dmg",
+                ".iso", ".flv", ".m4v", ".torrent"};
+            if (config.ExtensionsToIgnore.IsNotEmpty())
+            {
+                extensionsToIgnore.AddRange(config.ExtensionsToIgnore);
+            }
+            return extensionsToIgnore;
         }
 
         public void Init(HttpApplication context)
         {
-            this._context = context;
+            _context = context;
             _prerenderConfig = ConfigurationManager.GetSection(PRERENDER_SECTION_KEY) as PrerenderConfigSection;
 
+            _crawlerUserAgents = GetCrawlerUserAgents(_prerenderConfig);
+            _extensionsToIgnore = GetExtensionsToIgnore(_prerenderConfig);
+
             context.BeginRequest += context_BeginRequest;
+        }
+
+        public void Dispose()
+        {
+
         }
 
         protected void context_BeginRequest(object sender, EventArgs e)
@@ -68,7 +105,7 @@ namespace Prerender.io
                         response.Headers.Add(header, value);
                     }
                 }
-      
+
                 response.Write(result.ResponseBody);
                 response.Flush();
                 context.CompleteRequest();
@@ -94,7 +131,7 @@ namespace Prerender.io
             try
             {
                 // Get the web response and read content etc. if successful
-                var webResponse = (HttpWebResponse) webRequest.GetResponse();
+                var webResponse = (HttpWebResponse)webRequest.GetResponse();
                 var reader = new StreamReader(webResponse.GetResponseStream(), Encoding.UTF8);
                 return new ResponseResult(webResponse.StatusCode, reader.ReadToEnd(), webResponse.Headers);
             }
@@ -139,19 +176,19 @@ namespace Prerender.io
             }
 
             // Remove the application from the URL
-			if (_prerenderConfig.StripApplicationNameFromRequestUrl && !string.IsNullOrEmpty(request.ApplicationPath) && request.ApplicationPath != "/")
-			{
-				// http://test.com/MyApp/?_escape_=/somewhere
-				url = url.Replace(request.ApplicationPath, string.Empty);
-			}
- 
+            if (_prerenderConfig.StripApplicationNameFromRequestUrl && !string.IsNullOrEmpty(request.ApplicationPath) && request.ApplicationPath != "/")
+            {
+                // http://test.com/MyApp/?_escape_=/somewhere
+                url = url.Replace(request.ApplicationPath, string.Empty);
+            }
+
             var prerenderServiceUrl = _prerenderConfig.PrerenderServiceUrl;
             return prerenderServiceUrl.EndsWith("/")
                 ? (prerenderServiceUrl + url)
                 : string.Format("{0}/{1}", prerenderServiceUrl, url);
         }
-	
-	public static string RemoveQueryStringByKey(string url, string key)
+
+        public static string RemoveQueryStringByKey(string url, string key)
         {
             var uri = new Uri(url);
 
@@ -178,10 +215,6 @@ namespace Prerender.io
 
             var blacklist = _prerenderConfig.Blacklist;
             if (blacklist != null && IsInBlackList(url, referer, blacklist))
-
-
-
-
             {
                 return false;
             }
@@ -229,52 +262,20 @@ namespace Prerender.io
 
         private bool IsInResources(Uri url)
         {
-            var extensionsToIgnore = GetExtensionsToIgnore();
-            return extensionsToIgnore.Any(item => url.AbsoluteUri.ToLower().Contains(item.ToLower()));
-        }
-
-        private IEnumerable<String> GetExtensionsToIgnore()
-        {
-            var extensionsToIgnore = new List<string>(new[]{".js", ".css", ".less", ".png", ".jpg", ".jpeg",
-                ".gif", ".pdf", ".doc", ".txt", ".zip", ".mp3", ".rar", ".exe", ".wmv", ".doc", ".avi", ".ppt", ".mpg",
-                ".mpeg", ".tif", ".wav", ".mov", ".psd", ".ai", ".xls", ".mp4", ".m4a", ".swf", ".dat", ".dmg",
-                ".iso", ".flv", ".m4v", ".torrent"});
-            if (_prerenderConfig.ExtensionsToIgnore.IsNotEmpty())
-            {
-                extensionsToIgnore.AddRange(_prerenderConfig.ExtensionsToIgnore);
-            }
-            return extensionsToIgnore;
+            return _extensionsToIgnore.Any(item => url.AbsoluteUri.ToLower().Contains(item.ToLower()));
         }
 
         private bool IsInSearchUserAgent(string useAgent)
         {
-            var crawlerUserAgents = GetCrawlerUserAgents();
-
             // We need to see if the user agent actually contains any of the partial user agents we have!
             // THE ORIGINAL version compared for an exact match...!
             return
-                (crawlerUserAgents.Any(
+                (_crawlerUserAgents.Any(
                     crawlerUserAgent =>
                     useAgent.IndexOf(crawlerUserAgent, StringComparison.InvariantCultureIgnoreCase) >= 0));
         }
 
-        private IEnumerable<String> GetCrawlerUserAgents()
-        {
-            var crawlerUserAgents = new List<string>(new[]
-                {
-                    "googlebot", "yahoo", "bingbot", "yandex", "baiduspider", "facebookexternalhit", "twitterbot", "rogerbot", "linkedinbot", 
-                    "embedly", "quora link preview", "showyoubot", "outbrain", "pinterest/0.", 
-                    "developers.google.com/+/web/snippet", "slackbot", "vkShare", "W3C_Validator", 
-                    "redditbot", "Applebot", "WhatsApp", "flipboard", "tumblr", "bitlybot", 
-                    "SkypeUriPreview", "nuzzel", "Discordbot", "Google Page Speed", "x-bufferbot"
-                });
 
-            if (_prerenderConfig.CrawlerUserAgents.IsNotEmpty())
-            {
-                crawlerUserAgents.AddRange(_prerenderConfig.CrawlerUserAgents);
-            }
-            return crawlerUserAgents;
-        }
 
         private bool HasEscapedFragment(HttpRequest request)
         {

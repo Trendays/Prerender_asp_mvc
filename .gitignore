@@ -3,4 +3,6 @@
 *.suo
 packages/
 .DS_Store
-
+.vs/
+*.exe
+*.nupkg
