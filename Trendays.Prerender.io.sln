@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2047
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prerender.io", "Prerender.io\Prerender.io.csproj", "{EF621345-0520-4F7A-80F4-2C04EEAF2D44}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trendays.Prerender.io", "Prerender.io\Trendays.Prerender.io.csproj", "{EF621345-0520-4F7A-80F4-2C04EEAF2D44}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +18,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {13F21EA6-BF5B-4F98-A009-47F59A98B12B}
 	EndGlobalSection
 EndGlobal

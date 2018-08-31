@@ -1,0 +1,11 @@
+﻿<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>Trendays.Prerender.io</title>
+    <authors>Trendays Solutions</authors>
+    <owners>Trendays Solutions</owners>
+	<description>Trendays Prerender.io fork</description>
+  </metadata>
+</package>

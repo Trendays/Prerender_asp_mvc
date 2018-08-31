@@ -7,8 +7,8 @@
     <ProjectGuid>{EF621345-0520-4F7A-80F4-2C04EEAF2D44}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Prerender.io</RootNamespace>
-    <AssemblyName>Prerender.io</AssemblyName>
+    <RootNamespace>Trendays.Prerender.io</RootNamespace>
+    <AssemblyName>Trendays.Prerender.io</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -47,6 +47,9 @@
     <Compile Include="ProxyConfigElement.cs" />
     <Compile Include="ResponseResult.cs" />
     <Compile Include="Utils.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Prerender.io.nuspec" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
