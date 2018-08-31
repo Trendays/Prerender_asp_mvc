@@ -7,7 +7,7 @@
     <ProjectGuid>{EF621345-0520-4F7A-80F4-2C04EEAF2D44}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Trendays.Prerender.io</RootNamespace>
+    <RootNamespace>Prerender.io</RootNamespace>
     <AssemblyName>Trendays.Prerender.io</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
