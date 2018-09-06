@@ -23,28 +23,33 @@ namespace Prerender.io
 
         private List<String> GetCrawlerUserAgents(PrerenderConfigSection config)
         {
-            var crawlerUserAgents = new List<string>()
-                {
-                    "googlebot", "yahoo", "bingbot", "yandex", "baiduspider", "facebookexternalhit", "twitterbot", "rogerbot", "linkedinbot",
-                    "embedly", "quora link preview", "showyoubot", "outbrain", "pinterest/0.",
-                    "developers.google.com/+/web/snippet", "slackbot", "vkShare", "W3C_Validator",
-                    "redditbot", "Applebot", "WhatsApp", "flipboard", "tumblr", "bitlybot",
-                    "SkypeUriPreview", "nuzzel", "Discordbot", "Google Page Speed", "x-bufferbot"
-                };
+            List<string> crawlerUserAgents = new List<string>()
+            {
+                /*"googlebot",*/ "yahoo", "bingbot", "yandex", "baiduspider", "facebookexternalhit", "twitterbot", "rogerbot", "linkedinbot",
+                "embedly", "quora link preview", "showyoubot", "outbrain", "pinterest/0.",
+                "developers.google.com/+/web/snippet", "slackbot", "vkShare", "W3C_Validator",
+                "redditbot", "Applebot", "WhatsApp", "flipboard", "tumblr", "bitlybot",
+                "SkypeUriPreview", "nuzzel", "Discordbot", "Google Page Speed", "x-bufferbot"
+            };
 
             if (config.CrawlerUserAgents.IsNotEmpty())
             {
                 crawlerUserAgents.AddRange(config.CrawlerUserAgents);
             }
+
             return crawlerUserAgents;
         }
 
         private List<String> GetExtensionsToIgnore(PrerenderConfigSection config)
         {
-            var extensionsToIgnore = new List<string>() {".js", ".css", ".less", ".png", ".jpg", ".jpeg",
+            List<string> extensionsToIgnore = new List<string>()
+            {
+                ".js", ".css", ".less", ".png", ".jpg", ".jpeg",
                 ".gif", ".pdf", ".doc", ".txt", ".zip", ".mp3", ".rar", ".exe", ".wmv", ".doc", ".avi", ".ppt", ".mpg",
                 ".mpeg", ".tif", ".wav", ".mov", ".psd", ".ai", ".xls", ".mp4", ".m4a", ".swf", ".dat", ".dmg",
-                ".iso", ".flv", ".m4v", ".torrent"};
+                ".iso", ".flv", ".m4v", ".torrent"
+            };
+
             if (config.ExtensionsToIgnore.IsNotEmpty())
             {
                 extensionsToIgnore.AddRange(config.ExtensionsToIgnore);
