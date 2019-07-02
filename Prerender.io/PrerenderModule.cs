@@ -26,7 +26,7 @@ namespace Prerender.io
             List<string> crawlerUserAgents = new List<string>()
             {
                 /*"googlebot",*/ "yahoo", "bingbot", "yandex", "baiduspider", "facebookexternalhit", "twitterbot", "rogerbot", "linkedinbot",
-                "embedly", "quora link preview", "showyoubot", "outbrain", "pinterest/0.",
+                "embedly", "quora link preview", "showyoubot", "outbrain", "pinterest/0.", "pinterestbot/",
                 "developers.google.com/+/web/snippet", "slackbot", "vkShare", "W3C_Validator",
                 "redditbot", "Applebot", "WhatsApp", "flipboard", "tumblr", "bitlybot",
                 "SkypeUriPreview", "nuzzel", "Discordbot", "Google Page Speed", "x-bufferbot"
